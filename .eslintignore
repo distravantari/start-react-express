@@ -1,0 +1,4 @@
+# node_modules ignored by default
+public/
+server/index.js
+client/model/
