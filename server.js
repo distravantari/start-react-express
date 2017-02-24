@@ -5,6 +5,7 @@ var express = require("express");
 var hbs = require("hbs");
 var hbsutils = require("hbs-utils")(hbs);
 var compress = require("compression");
+var http = require('http');
 
 var app = express();
 
@@ -39,13 +40,21 @@ require(__root + "server/database");
 require(__root + "server/config/routes").routes(app);
 
 // =======================
+// HTTP server
+// =======================
+var server = http.createServer(app);
+
+// =======================
 // WebSocket server
 // =======================
 var io = require('socket.io')(server);
-io.on('connection', require('./lib/routes/socket'));
+io.on('connection', require('./server/model/face'));
 
 // =======================
 // Launch Application
 // =======================
 var PORT = 3010;
-app.listen(PORT);
+// app.listen(PORT);
+server.listen(PORT, function () {
+  console.log('HTTP server listening on port ' + PORT);
+});

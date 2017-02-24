@@ -10,7 +10,6 @@ class Index extends Component {
 	render() {
 		return (
 			<div>
-				<p>untuk Menjaga Privasi Wajahnya.</p>
 				{ this.props.children }
 			</div>
 		);

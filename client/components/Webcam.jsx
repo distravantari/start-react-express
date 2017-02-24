@@ -21,7 +21,7 @@ class Cam extends Component {
 	render() {
 		return (
 			<div>
-				<Webcam width="450" height="450" ref="webcam" />
+				<Webcam width="300" height="300" ref="webcam" />
 				<div className="controls">
 					<button onClick={() => this.screenshot()}>capture</button>
 					<button type="button" onClick={() => this.context.router.push("/home")}>Dropzone</button>

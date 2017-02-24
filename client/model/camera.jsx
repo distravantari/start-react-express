@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
+// import Face from './recognition';
+// import MyImage from "./image"; 
 
 function hasGetUserMedia() {
   return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
@@ -191,11 +193,37 @@ export default class Webcam extends Component {
         // no longer need to read the blob so it's revoked
         URL.revokeObjectURL(url);
       };
-
       newImg.src = url;
     });
     
-    return canvas.toDataURL(this.props.screenshotFormat);
+    return this.toGrayscale(canvas);
+  }
+
+  toGrayscale(canvas) {
+      var canvasContext = canvas.getContext('2d');
+      
+      var image = new Image();
+      image.src = canvas.toDataURL(this.props.screenshotFormat);
+      canvasContext.drawImage(image, 0, 0);
+
+      var imgW = parseFloat(image.width);
+      var imgH = parseFloat(image.height);
+
+      var imgPixels = canvasContext.getImageData(0, 0, imgW, imgH);
+
+      for(var y = 0; y < imgPixels.height; y++){
+          for(var x = 0; x < imgPixels.width; x++){
+                var i = (y * 4) * imgPixels.width + x * 4;
+                var avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
+                imgPixels.data[i] = avg;
+                imgPixels.data[i + 1] = avg;
+                imgPixels.data[i + 2] = avg;
+          }
+      }
+
+      canvasContext.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height);
+
+      return canvas.toDataURL();
   }
 
   getCanvas() {
@@ -208,6 +236,8 @@ export default class Webcam extends Component {
 
       canvas.width = video.clientWidth;
       canvas.height = video.clientWidth / aspectRatio;
+      // canvas.width = 300;
+      // canvas.height = 300;
 
       this.canvas = canvas;
       this.ctx = canvas.getContext('2d');
@@ -216,6 +246,7 @@ export default class Webcam extends Component {
     const {ctx, canvas} = this;
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
+    // Face(canvas);
     return canvas;
   }
 
