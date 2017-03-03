@@ -16,4 +16,17 @@ export const dropHandler = (file) => {
         });
 }
 
+export const login = (username, password) => {
+    return new Promise((resolve, reject) => {
+        request
+        .post("/login")
+        .type('form')
+        .send({username: username, password: password})
+        .end(function(err, res){
+            if(err) reject(err)
+            resolve(res)
+        });
+    })
+}
+
 // export const that is checking wether the photo drophandler got is a face or not

@@ -1,7 +1,7 @@
 import { Component, PropTypes } from "react";
 // import Webcam from "react-webcam";
 import Webcam from "az-client/model/camera";
-import { dropHandler } from "az-client/model/upload";
+import { dropHandler } from "az-client/model/action";
 
 // Webcam component
 class Cam extends Component {

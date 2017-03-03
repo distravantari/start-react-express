@@ -23,7 +23,10 @@ module.exports = function (socket) {
       im.detectObject('./node_modules/opencv/data/haarcascade_frontalface_alt_tree.xml', {}, function(err, faces) {
         if (err) throw err;
 
+        // if (!faces.length) return console.log("No Faces");
+
         for (var i = 0; i < faces.length; i++) {
+          // console.log("Face found");
           face = faces[i];
           im.rectangle([face.x, face.y], [face.width, face.height], rectColor, rectThickness);
         }

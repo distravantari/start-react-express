@@ -37,7 +37,7 @@ require(__root + "server/database");
 // =======================
 // Routes
 // =======================
-require(__root + "server/config/routes").routes(app);
+require(__root + "server/config/routes")(app);
 
 // =======================
 // HTTP server
@@ -48,7 +48,7 @@ var server = http.createServer(app);
 // WebSocket server
 // =======================
 var io = require('socket.io')(server);
-io.on('connection', require('./server/model/face'));
+io.on('connection', require('./server/socket/face'));
 
 // =======================
 // Launch Application

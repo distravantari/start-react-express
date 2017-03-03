@@ -195,9 +195,21 @@ export default class Webcam extends Component {
       };
       newImg.src = url;
     });
-    
     return this.toGrayscale(canvas);
   }
+
+  toMatriks(ss) {
+		const canvas = this.getCanvas();
+		const canvasContext = canvas.getContext('2d');
+		const image = new Image();
+		image.src = ss;
+		canvasContext.drawImage(image, 0, 0);
+
+		var imgW = parseFloat(image.width);
+		var imgH = parseFloat(image.height);
+
+		var imgPixels = canvasContext.getImageData(0, 0, imgW, imgH);
+	}
 
   toGrayscale(canvas) {
       var canvasContext = canvas.getContext('2d');
@@ -220,10 +232,10 @@ export default class Webcam extends Component {
                 imgPixels.data[i + 2] = avg;
           }
       }
-
       canvasContext.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height);
 
-      return canvas.toDataURL();
+      const gray = canvas.toDataURL();
+      return gray
   }
 
   getCanvas() {

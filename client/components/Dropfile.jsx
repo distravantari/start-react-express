@@ -1,6 +1,6 @@
 import { Component, PropTypes } from "react";
 import Dropzone from "react-dropzone";
-import { dropHandler } from "az-client/model/upload";
+import { dropHandler } from "az-client/model/action";
 
 // Home component
 class Drop extends Component {
