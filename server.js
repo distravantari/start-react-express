@@ -1,60 +1,45 @@
-// =======================
-// Import Libraries
-// =======================
-var express = require("express");
-var hbs = require("hbs");
-var hbsutils = require("hbs-utils")(hbs);
-var compress = require("compression");
-var http = require('http');
-
-var app = express();
-
 global.__root = __dirname + "/"; // eslint-disable-line
 
-process.on("uncaughtException", function (err) {
-	console.log("Caught exception: " + err); // eslint-disable-line
-});
+var path        = require('path');
+var express     = require('express');
+var http        = require('http');
+var colors      = require('colors')
+var settings    = require('./server/config/settings');
+var environment = require(__root+'/server/config/env');
+var routes      = require(__root+'/server/config/routes');
 
-// =======================
-// Expressjs Configuration
-// =======================
-app.use(compress());
-app.use("/assets", express.static(__dirname + "/assets")); // eslint-disable-line
-app.use("/public", express.static(__dirname + "/public")); // eslint-disable-line
+module.exports.start = function (done) {
+  var app = express();
+  
+  process.on("uncaughtException", function (err) {
+    console.log("Caught exception: " + err); // eslint-disable-line
+  });
 
-hbs.registerPartials(__dirname + "/views/partials"); // eslint-disable-line
-hbsutils.registerWatchedPartials(__dirname + "/views/partials"); // eslint-disable-line
+  environment(app);
+  routes(app);
 
-app.set("view engine", "hbs");
-app.set("views", __dirname + "/views"); // eslint-disable-line
-app.disable("x-powered-by");
+  var server = http.createServer(app);
 
-// =======================
-// Database Configuration
-// =======================
-require(__root + "server/database");
+  var io = require('socket.io')(server);
+  // io.on('connection', require('./server/socket/face'));
 
-// =======================
-// Routes
-// =======================
-require(__root + "server/config/routes")(app);
+  server.listen(settings.port, function () {
+    console.log( ("Listening on port " + settings.port).green );
 
-// =======================
-// HTTP server
-// =======================
-var server = http.createServer(app);
+    if (done) {
+      return done(null, app, server);
+    }
+  }).on('error', function (e) {
+    if (e.code == 'EADDRINUSE') {
+      console.log('Address in use. Is the server already running?'.red);
+    }
+    if (done) {
+      return done(e);
+    }
+  });
+}
 
-// =======================
-// WebSocket server
-// =======================
-var io = require('socket.io')(server);
-io.on('connection', require('./server/socket/face'));
-
-// =======================
-// Launch Application
-// =======================
-var PORT = 3010;
-// app.listen(PORT);
-server.listen(PORT, function () {
-  console.log('HTTP server listening on port ' + PORT);
-});
+// If someone ran: "node server.js" then automatically start the server
+if (path.basename(process.argv[1],'.js') == path.basename(__filename,'.js')) {
+  module.exports.start()
+}

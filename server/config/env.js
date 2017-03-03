@@ -29,16 +29,16 @@ module.exports = function (app) {
     app.set("view engine", "hbs");
     app.set("views", __root + "/views"); // eslint-disable-line
 
-    app.use(function (req, res, next) {
-      models(function (err, db) {
-        if (err) return next(err);
+    // app.use(function (req, res, next) {
+    //   models(function (err, db) {
+    //     if (err) return next(err);
 
-        req.models = db.models;
-        req.db     = db;
+    //     req.models = db.models;
+    //     req.db     = db;
 
-        return next();
-      });
-    })
+    //     return next();
+    //   });
+    // })
 
     app.disable("x-powered-by");
     

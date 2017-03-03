@@ -11,38 +11,31 @@ class Authentication extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			// user has account? true -> login, else -> register
-			account: true
-		};
 	}
 
 	render() {
 		return (
 			<div>
-				{ this.state.account ? <Login account={ this.state.account } clickit={ () => this.clickAcc() } context={ this.context } /> : <Register account={ this.state.account } clickit={ () => this.clickAcc() } context={ this.context } /> }
+				<Login clickit={ () => this.clickAcc() }/>
 			</div>
 		);
 	}
 
 	clickAcc() {
-		this.setState({
-			account: !this.state.account
-		});
+		this.context.router.push("/home");
 	}
 }
 
 // Login component
 class Login extends Component {
 	render() {
-		console.log("user has account? ", this.props.account);
 		return (
 			<div>
 				please login <br />
 				Username: <input type="text" ref={(ref) => this.usernameRef = ref} /> <br />
 				password: <input type="password" ref={(ref) => this.passwordRef = ref} /> <br />
 				<button type="button" onClick={() => this.auth()}>Login</button>
-				tidak memiliki account? <a onClick={ () => this.props.clickit() }> register </a>
+				dont have the account? <a onClick={ () => this.props.clickit() }> click here </a>
 			</div>
 		);
 	}
@@ -64,19 +57,5 @@ class Login extends Component {
 		}
 	}
 }
-
-// Register component
-const Register = ({ account, clickit, context }) => {
-	console.log("user has account? ", account);
-	return (
-		<div>
-			please register <br />
-			Username: <input type="text" /> <br />
-			password: <input type="password" /> <br />
-			<button type="button" onClick={() => context.router.push("/home")}>Register</button>
-			sudah memiliki account? <a onClick={ () => clickit() }> login </a>
-		</div>
-		);
-};
 
 export default Authentication;

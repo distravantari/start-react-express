@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tylerevans/express-webpack-react"
+    "url": "https://github.com/distravantari/start-react-express"
   },
   "keywords": [
     "Express",
@@ -22,7 +22,7 @@
   "author": "Distra Vantari",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/tylerevans/express-webpack-react/issues"
+    "url": "https://github.com/distravantari/start-react-express/issues"
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.4.0",
