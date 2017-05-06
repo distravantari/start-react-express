@@ -35,7 +35,6 @@ class Login extends Component {
 				Username: <input type="text" ref={(ref) => this.usernameRef = ref} /> <br />
 				password: <input type="password" ref={(ref) => this.passwordRef = ref} /> <br />
 				<button type="button" onClick={() => this.auth()}>Login</button>
-				dont have the account? <a onClick={ () => this.props.clickit() }> click here </a>
 			</div>
 		);
 	}
